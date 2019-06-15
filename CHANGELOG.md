@@ -2,6 +2,18 @@
 
 ## Breaking Changes
 
+- [#186](https://github.com/pusher/oauth2_proxy/pull/186) Make config consistent
+  - This PR changes configuration options so that all flags have a config counterpart
+  of the same name but with underscores (`_`) in place of hyphens (`-`).
+  This change affects the following existing configuration options:
+  - The `proxy-prefix` option is now `proxy_prefix`.
+  - This PR changes environment variables so that all flags have an environment
+  counterpart of the same name but capitalised, with underscores (`_`) in place
+  of hyphens (`-`) and with the prefix `OAUTH2_PROXY_`.
+  This change affects the following existing environment variables:
+  - The `OAUTH2_SKIP_OIDC_DISCOVERY` environment variable is now `OAUTH2_PROXY_SKIP_OIDC_DISCOVERY`.
+  - The `OAUTH2_OIDC_JWKS_URL` environment variable is now `OAUTH2_PROXY_OIDC_JWKS_URL`.
+
 - [#146](https://github.com/pusher/oauth2_proxy/pull/146) Use full email address as `User` if the auth response did not contain a `User` field (@gargath)
   - This change modifies the contents of the `X-Forwarded-User` header supplied by the proxy for users where the auth response from the IdP did not contain
     a username.
@@ -14,6 +26,7 @@
 
 ## Changes since v3.2.0
 
+- [#186](https://github.com/pusher/oauth2_proxy/pull/186) Make config consistent (@JoelSpeed)
 - [#175](https://github.com/pusher/outh2_proxy/pull/175) Bump go-oidc to v2.0.0 (@aeijdenberg).
   - Includes fix for potential signature checking issue when OIDC discovery is skipped.
 - [#155](https://github.com/pusher/outh2_proxy/pull/155) Add RedisSessionStore implementation (@brianv0, @JoelSpeed)
@@ -24,7 +37,7 @@
     - `-redis-sentinel-master-name` Sets the Sentinel master name, if sentinel is enabled
     - `-redis-sentinel-connection-urls` Defines the Redis Sentinel Connection URLs, if sentinel is enabled
   - Introduces the concept of a session ticket. Tickets are composed of the cookie name, a session ID, and a secret.
-  - Redis Sessions are stored encrypted with a per-session secret 
+  - Redis Sessions are stored encrypted with a per-session secret
   - Added tests for server based session stores
 - [#168](https://github.com/pusher/outh2_proxy/pull/168) Drop Go 1.11 support in Travis (@JoelSpeed)
 - [#169](https://github.com/pusher/outh2_proxy/pull/169) Update Alpine to 3.9 (@kskewes)
