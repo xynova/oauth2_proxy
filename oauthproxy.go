@@ -915,7 +915,11 @@ func (p *OAuthProxy) GetJwtSession(req *http.Request) (*sessionsapi.SessionState
 			continue
 		}
 
+		// Add Upn for azure ad
+		// This should also be done as a provider implementation
+		// but it works to get things rolling
 		var claims struct {
+			Upn  string `json:"upn"`
 			Subject  string `json:"sub"`
 			Email    string `json:"email"`
 			Verified *bool  `json:"email_verified"`
@@ -923,6 +927,11 @@ func (p *OAuthProxy) GetJwtSession(req *http.Request) (*sessionsapi.SessionState
 
 		if err := bearerToken.Claims(&claims); err != nil {
 			return nil, fmt.Errorf("failed to parse bearer token claims: %v", err)
+		}
+
+		// Used for azure ad apps when email is not populated
+		if claims.Upn != "" {
+			claims.Subject = claims.Upn
 		}
 
 		if claims.Email == "" {
